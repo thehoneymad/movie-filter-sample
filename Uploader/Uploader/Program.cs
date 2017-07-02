@@ -139,28 +139,25 @@
 
                 Console.WriteLine("Connected to graph Movies collection");
 
-                Console.WriteLine("Adding users");
-
-                for (int i = 1; i <= 671; i++)
-                {
-                    IDocumentQuery<dynamic> query = client.CreateGremlinQuery<dynamic>(graph, $"g.addV('movie')");
-                }
-
                 Console.WriteLine("Reading review list");
                 using (TextReader reader = new StreamReader("ratings.csv"))
                 using (CsvReader csv = new CsvReader(reader))
                 {
                     while (csv.Read())
                     {
-                        string userId = csv.GetField<string>(0);
-                        string moveiId = csv.GetField<string>(1);
+                        string userId = "user" + csv.GetField<string>(0);
+                        string movieId = csv.GetField<string>(1);
                         float rating = csv.GetField<float>(2);
 
-                        Console.WriteLine("Uploading review for user " + userId + " to " + moveiId);
-                        IDocumentQuery<dynamic> query = client.CreateGremlinQuery<dynamic>(graph, $"g.V('movie').has('id').property('id', '{userId}').property('title', {moveiId})");
+                        Console.WriteLine("Uploading review for user " + userId + " to " + movieId + " with rating "+ rating);
+                        IDocumentQuery<dynamic> query = client.CreateGremlinQuery<dynamic>(graph, $"g.V('user').has('id', '{userId}').addE('rates').property('weight', {rating}).to(g.V('movie').has('id', '{movieId}'))");
                         while (query.HasMoreResults)
                         {
-                            await query.ExecuteNextAsync();
+                            var result = await query.ExecuteNextAsync();
+                            foreach (var item in result)
+                            {
+                                Console.WriteLine(item);
+                            }
                         }
                     }
                 }
