@@ -115,7 +115,10 @@
                         IDocumentQuery<dynamic> query = client.CreateGremlinQuery<dynamic>(graph, $"g.addV('user').property('id', '{idField}')");
                         while (query.HasMoreResults)
                         {
-                            await query.ExecuteNextAsync();
+                            foreach (var result in await query.ExecuteNextAsync())
+                            {
+                                Console.WriteLine(JsonConvert.SerializeObject(result));
+                            }
                         }
                     }
                 }
@@ -150,7 +153,7 @@
                         float rating = csv.GetField<float>(2);
 
                         Console.WriteLine("Uploading review for user " + userId + " to " + movieId + " with rating "+ rating);
-                        IDocumentQuery<dynamic> query = client.CreateGremlinQuery<dynamic>(graph, $"g.V('user').has('id', '{userId}').addE('rates').property('weight', {rating}).to(g.V('movie').has('id', '{movieId}'))");
+                        IDocumentQuery<dynamic> query = client.CreateGremlinQuery<dynamic>(graph, $"g.V().hasLabel('user').has('id', '{userId}').addE('rates').property('weight', {rating}).to(g.V().has('id', '{movieId}'))");
                         while (query.HasMoreResults)
                         {
                             var result = await query.ExecuteNextAsync();
