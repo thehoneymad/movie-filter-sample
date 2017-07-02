@@ -103,7 +103,7 @@
                 Console.WriteLine("Connected to graph Movies collection");
 
                 Console.WriteLine("Reading users list");
-                using (TextReader reader = new StreamReader("users.csv"))
+                using (TextReader reader = new StreamReader("users2.csv"))
                 using (CsvReader csv = new CsvReader(reader))
                 {
                     while (csv.Read())
@@ -143,7 +143,7 @@
                 Console.WriteLine("Connected to graph Movies collection");
 
                 Console.WriteLine("Reading review list");
-                using (TextReader reader = new StreamReader("ratings.csv"))
+                using (TextReader reader = new StreamReader("ratings2.csv"))
                 using (CsvReader csv = new CsvReader(reader))
                 {
                     while (csv.Read())
@@ -186,7 +186,7 @@
                 Console.WriteLine("Connected to graph Movies collection");
 
                 Console.WriteLine("Reading movie list");
-                using (TextReader reader = new StreamReader("movies.csv"))
+                using (TextReader reader = new StreamReader("movies2.csv"))
                 using (CsvReader csv = new CsvReader(reader))
                 {
                     while (csv.Read())
