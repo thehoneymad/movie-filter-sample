@@ -1,1 +1,72 @@
 ﻿g.V().hasLabel('user').has('id', 'user7').outE('rates').has('weight', gt(2)).inV().as('exclude').inE('rates').has('weight', gt(4)).outV().dedup().outE('rates').has('weight', gt(4)).inV().dedup().where(neq('exclude')).order().by(inE('rates').count(), decr).values('title').dedup().limit(10)
+
+g.V()
+    .hasLabel('user')
+    .has('id', 'user7')
+    .outE('rates')
+    .has('weight', gte(4.5))
+    .inV()
+    .as('exclude')
+    .inE('rates')
+    .has('weight', gte(4.5))
+    .outV()
+    .outE('rates')
+    .has('weight', gte(4))
+    .inV()
+    .where(neq('exclude'))
+    .order().by(inE('rates').count(), decr)
+    .limit(10)
+    .values('title')
+    .limit(10)
+
+g.V().hasLabel('user').has('id', 'user7').outE('rates').has('weight', gte(4.5)).inV().as('exclude').inE('rates').has('weight', gte(4.5)).outV().outE('rates').has('weight', gte(4.5)).inV().where(neq('exclude')).order().by(inE('rates').count(), decr).values('title').dedup().limit(10)
+
+g.addV('movie')
+    .property('id', '{idField}')
+    .property('title', {titleField})
+
+g.V()
+    .hasLabel('user')
+    .has('id', '{userId}')
+    .addE('rates')
+    .property('weight', {rating})
+    .to(g.V()
+    .has('id', '{movieId}'))
+
+
+g.V()
+    .hasLabel('user')
+    .has('id', '{userId}')
+    .addE('rates')
+    .property('weight', {rating})
+    .to(g.V()
+    .has('id', '{movieId}'))
+
+# Movies the user liked
+
+"Braveheart (1995)"
+"Star Wars: Episode IV - A New Hope (1977)"
+"Shawshank Redemption, The (1994)"
+"Wallace & Gromit: The Best of Aardman Animation (1996)"
+"Wallace & Gromit: A Close Shave (1995)"
+"Wallace & Gromit: The Wrong Trousers (1993)"
+"Star Wars: Episode V - The Empire Strikes Back (1980)"
+"Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981)"
+"Star Wars: Episode VI - Return of the Jedi (1983)"
+"Grand Day Out with Wallace and Gromit, A (1989)"
+"Amadeus (1984)"
+"Glory (1989)"
+"Beavis and Butt-Head Do America (1996)"
+
+# Suggestions
+  "Forrest Gump (1994)",
+  "Pulp Fiction (1994)",
+  "Fargo (1996)",
+  "Silence of the Lambs, The (1991)",
+  "Star Trek: Generations (1994) - A New Hope (1977)",
+  "Jurassic Park (1993)",
+  "Matrix, The (1999)",
+  "Toy Story (1995)",
+  "Schindler's List (1993)",
+  "Terminator 2: Judgment Day (1991)"
+
